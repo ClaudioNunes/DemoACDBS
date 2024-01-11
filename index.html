@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Call for PDF</title>
+</head>
+<body>
+
+    <h1>Integracao ACDBS - Segunda via boleto</h1>
+    <button id="fetchData">Mostra boleto</button>
+    <br><br>
+    <iframe id="pdfViewer" style="width:600px; height:500px;" hidden></iframe>
+
+    <script>
+        document.getElementById('fetchData').addEventListener('click', function() {
+            fetch('http://acdssv.dyndns.org:2080/api/Faturas/176676?token=9rLcb7WUt', {
+                headers: {
+                    'Content-Type': 'application/pdf'
+                }
+            })
+            .then(response => response.blob())
+            .then(blob => {
+                const pdfUrl = URL.createObjectURL(blob);
+                const iframe = document.getElementById('pdfViewer');
+                iframe.src = pdfUrl;
+                iframe.hidden = false;
+            })
+            .catch(error => console.error('Erro:', error));
+        });
+    </script>
+
+</body>
+</html>
